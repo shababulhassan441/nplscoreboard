@@ -10,7 +10,7 @@ export default function Scoreboard({ matchId }) {
   const [runs, setRuns] = useState(0);
   const [batsman, setBatsman] = useState("");
   const [bowler, setBowler] = useState("");
-  const [over, setOver] = useState(1);
+  const [over, setOver] = useState(0);
   const [balls, setBalls] = useState([]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Scoreboard({ matchId }) {
     const newBall = {
       match: matchId,
       inning: match.innings[0]._id,
-      over,
+      over:over,
       ball_number: balls.length + 1,
       bowler,
       batsman:match.innings[0].batsmen[-1],
@@ -64,16 +64,16 @@ export default function Scoreboard({ matchId }) {
         <>
           <div className="bg-white text-black p-3 rounded mt-2">
             <p className="text-xl font-semibold">{match?.innings[0]?.team}, 1st Inning</p>
-            <p className="text-3xl font-bold">{match?.innings[0]?.total_runs} - {match?.innings[0]?.total_wickets} ({over}.{balls.length-1})</p>
+            <p className="text-3xl font-bold">{match?.innings[0]?.total_runs} - {match?.innings[0]?.total_wickets} ({match?.innings[0]?.current_over_balls?.number}.{balls.length})</p>
             <p className="text-sm">CRR: {(match?.innings[0]?.total_runs / (over || 1)).toFixed(2)}</p>
           </div>
 
           <div className="mt-4 p-3 bg-white text-black rounded">
             <h2 className="text-lg font-semibold">Batsman</h2>
-            <p>{match.innings[0]?.batsmen[match.innings[0]?.batsmen.length-1].player_name || "Select Batsman"}*</p>
-            <p>{match.innings[0]?.batsmen[0].player_name || "Select Batsman"}</p>
+            <p>{match.innings[0]?.batsmen[match.innings[0]?.batsmen.length-1]?.player_name || "Select Batsman"}*</p>
+            <p>{match.innings[0]?.batsmen[0]?.player_name || "Select Batsman"}</p>
             <h2 className="text-lg font-semibold mt-2">Bowler</h2>
-            <p>{match.innings[0]?.bowlers[match.innings[0]?.bowlers.length-1].player_name || "Select Bowler"}</p>
+            <p>{match.innings[0]?.bowlers[match.innings[0]?.bowlers.length-1]?.player_name || "Select Bowler"}</p>
           </div>
 
           <div className="mt-4 p-3 bg-white text-black rounded">

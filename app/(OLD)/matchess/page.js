@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import ClearDBButton from "@/components/ClearDBButton";
 
 export default function Matches() {
   const [matches, setMatches] = useState([]);
@@ -16,7 +17,7 @@ export default function Matches() {
       <Link href="/matches/create" className="bg-green-500 text-white p-2 rounded block mt-4 text-center">
         Create New Match
       </Link>
-
+      <ClearDBButton />
       <div className="mt-6 space-y-4">
         {matches.map((match) => (
           <div key={match._id} className="border p-4 rounded shadow">

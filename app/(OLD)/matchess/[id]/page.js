@@ -269,27 +269,6 @@ export default function MatchDetails() {
         </p>
       )}
 
-      {/* Display Innings */}
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold">Innings</h3>
-        {innings.length === 0 ? (
-          <p>No innings added yet.</p>
-        ) : (
-          innings.map((inning) => (
-            <div key={inning._id} className="border p-4 mt-2 rounded shadow">
-              <p className="font-semibold">
-                Batting: {inning.team || "Not Assigned"}
-              </p>
-              <p>
-                Runs: {inning.total_runs} | Wickets: {inning.total_wickets} | Overs: {inning.overs}
-              </p>
-              <p>Batsmen: {inning.batsmen[0].player_name|| "Not Assigned"}*</p>
-              <p>Batsmen: {inning.batsmen[1].player_name|| "Not Assigned"}</p>
-              <p>Bowler: {inning.bowlers[0].player_name || "Not Assigned"}</p>
-            </div>
-          ))
-        )}
-      </div>
 
       <Scoreboard matchId={id} />
     </div>

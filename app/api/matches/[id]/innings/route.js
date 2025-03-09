@@ -27,6 +27,10 @@ export async function POST(req, { params }) {
         batsmen: [],
         bowlers: [],
         balls: [],
+        current_over: {
+          number: 0, // Start from over 0
+          balls: []   // No balls bowled yet
+        }
       });
   
       await newInning.save();
