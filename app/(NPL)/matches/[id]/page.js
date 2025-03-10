@@ -83,7 +83,8 @@ export default function MatchDetails() {
             <div className="flex flex-col gap-2">
               <p className="">
                 {match.toss_winner.name}, won the Toss elect to{" "}
-                {match.toss_decision === "Batting" ? "bat first" : "bowl first"}.
+                {match.toss_decision === "Batting" ? "bat first" : "bowl first"}
+                .
               </p>
               <div>
                 <p className="text-[28px] font-semibold">
@@ -158,30 +159,17 @@ export default function MatchDetails() {
             </div>
             <div className="w-[60%]  p-1 rounded-sm border border-gray-100  ">
               <div className=" flex gap-3 justify-center items-center flex-wrap p-2 bg-[#F1F5F9] rounded-sm">
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  0
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  1
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  2
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  3
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  4s
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  5
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  6s
-                </p>
-                <p className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center">
-                  ...
-                </p>
+                <div className="grid grid-cols-4 gap-2">
+                  {[0, 1, 2, 3, 4, 5, 6].map((run) => (
+                    <button
+                      key={run}
+                      className="border border-[#0066FF] rounded-full p-4 w-[15px] h-[15px] flex items-center justify-center"
+                      onClick={() => addBall(run)}
+                    >
+                      {run}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
