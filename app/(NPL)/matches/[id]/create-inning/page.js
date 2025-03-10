@@ -95,7 +95,7 @@ export default function CreateInning() {
         bowlersStats: [bowlerId],
       });
 
-      // router.push(`/matches/${id}`);
+      router.push(`/matches/${id}`);
     } catch (error) {
       console.error("Error creating inning:", error);
     }

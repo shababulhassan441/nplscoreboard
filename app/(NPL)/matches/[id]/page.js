@@ -10,34 +10,31 @@ import BattingStats from "@/components/BattingStats";
 import BowlerStats from "@/components/BowlerStats";
 import Button from "@/components/Button";
 
-
 export default function MatchDetails() {
   // const socket = io("http://localhost:3001");
   const { id } = useParams();
   const router = useRouter();
   const [match, setMatch] = useState(null);
   const [innings, setInnings] = useState([]);
-  const [batsmen1, setBatsmen1] = useState(["", ""]);
-  const [batsmen2, setBatsmen2] = useState(["", ""]);
+  const [batsmen, setBatsmen] = useState(["", ""]);
   const [bowler, setBowler] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      console.log("fetching data...")
+      console.log("fetching data...");
       try {
         const matchRes = await axios.get(`/api/npl/matches/${id}`);
-        
+
         // Redirect if no innings exist
         if (matchRes.data.innings.length === 0) {
-          console.log("redirecting...")
+          console.log("redirecting...");
           router.push(`/matches/${id}/create-inning`);
           return;
         }
-        setInnings(matchRes.data.innings[0])
-        setBatsmen1(matchRes.data.innings[0].batsmenStats[0])
-        setBatsmen2(matchRes.data.innings[0].batsmenStats[1])
-        setBowler(matchRes.data.innings[0].bowlersStats[0])
+        setInnings(matchRes.data.innings[0]);
+        setBatsmen(matchRes.data.innings[0].batsmenStats);
+        setBowler(matchRes.data.innings[0].bowlersStats);
         setMatch(matchRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,20 +59,22 @@ export default function MatchDetails() {
   // }, [id]);
 
   if (!match) return;
-console.log("innings",innings)
-console.log("match",match)
-console.log("batsmen1",batsmen1)
-console.log("batsmen2",batsmen2)
-console.log("bowler",bowler)
 
+  function calculateStrikeRate(runs, ballsFaced) {
+    if (ballsFaced === 0) return 0; // Avoid division by zero
+    return (runs / ballsFaced) * 100;
+  }
 
-
-
-
-
+  function calculateEconomyRate(runsConceded, overs) {
+    if (overs === 0) return 0; // Avoid division by zero
+    return (runsConceded / overs);
+}
   return (
     <Container>
-      <Header title={`${match.team1.name} v/s ${match.team2.name}`} backlink={`/matches`} />
+      <Header
+        title={`${match.team1.name} v/s ${match.team2.name}`}
+        backlink={`/matches`}
+      />
 
       <div className="flex flex-col gap-3 px-3">
         <div className="bg-[#F1F5F9] rounded-md p-[10px]">
@@ -84,7 +83,10 @@ console.log("bowler",bowler)
               <p className="">Team A , 1st Inning</p>
               <div>
                 <p className="text-[28px] font-semibold">
-                  {innings.totalRuns} - {innings.totalWickets} <span className="text-[20px]">({innings.currentOverNumber}.{innings.currentBallNumber})</span>
+                  {innings.totalRuns} - {innings.totalWickets}{" "}
+                  <span className="text-[20px]">
+                    ({innings.currentOverNumber}.{innings.currentBallNumber})
+                  </span>
                 </p>
               </div>
             </div>
@@ -94,8 +96,8 @@ console.log("bowler",bowler)
             </div>
           </div>
         </div>
-        <BattingStats />
-        <BowlerStats />
+        <BattingStats batsmen={batsmen} srikeRate={calculateStrikeRate} />
+        <BowlerStats bowler={bowler} economyRate={calculateEconomyRate} />
         <div className="bg-[#F1F5F9] rounded-md p-[10px]">
           <div className="flex rounded-md items-center bg-white p-2 gap-3 ">
             <p className="">This Over</p>

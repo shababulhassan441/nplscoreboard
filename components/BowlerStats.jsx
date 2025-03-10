@@ -1,6 +1,6 @@
 import React from "react";
 
-const BowlerStats = () => {
+const BowlerStats = ({bowler,economyRate}) => {
   const data = [
     { batsman: "Nomi*", o: 2, m: 5, r: 0, w: 0, er: 140.0 },
   ];
@@ -18,14 +18,14 @@ const BowlerStats = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
+          {bowler.map((bowler, index) => (
             <tr key={index}>
-              <td className=" px-4 py-2 ">{row.batsman}</td>
-              <td className=" text-center px-[6px]">{row.o}</td>
-              <td className=" text-center px-[6px]">{row.m}</td>
-              <td className=" text-center px-[6px]">{row.r}</td>
-              <td className=" text-center px-[6px]">{row.w}</td>
-              <td className=" text-center px-[6px]">{row.er}</td>
+              <td className=" px-4 py-2 ">{bowler.playerId.name}</td>
+              <td className=" text-center px-[6px]">{bowler.overs}</td>
+              <td className=" text-center px-[6px]">{bowler.maidens}</td>
+              <td className=" text-center px-[6px]">{bowler.runsConceded}</td>
+              <td className=" text-center px-[6px]">{bowler.wickets}</td>
+              <td className=" text-center px-[6px]">{economyRate(bowler.runsConceded,bowler.overs).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const BattingStats = () => {
+const BattingStats = ({batsmen,srikeRate}) => {
   const data = [
     { batsman: "Nomi*", r: 2, b: 5, fours: 0, sixes: 0, sr: 40.0 },
     { batsman: "Shani", r: 14, b: 12, fours: 1, sixes: 1, sr: 116.67 },
@@ -19,14 +19,14 @@ const BattingStats = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
+          {batsmen.map((batsmen, index) => (
             <tr key={index}>
-              <td className=" px-4 py-2 ">{row.batsman}</td>
-              <td className=" text-center px-[6px]">{row.r}</td>
-              <td className=" text-center px-[6px]">{row.b}</td>
-              <td className=" text-center px-[6px]">{row.fours}</td>
-              <td className=" text-center px-[6px]">{row.sixes}</td>
-              <td className=" text-center px-[6px]">{row.sr}</td>
+              <td className=" px-4 py-2 ">{batsmen.playerId.name}</td>
+              <td className=" text-center px-[6px]">{batsmen.runs}</td>
+              <td className=" text-center px-[6px]">{batsmen.ballsFaced}</td>
+              <td className=" text-center px-[6px]">{batsmen.fours}</td>
+              <td className=" text-center px-[6px]">{batsmen.sixes}</td>
+              <td className=" text-center px-[6px]">{srikeRate(batsmen.runs,batsmen.ballsFaced).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
