@@ -26,8 +26,8 @@ const page = () => {
             </div>
           </div>
         </div>
-        <BattingStats />
-        <BowlerStats />
+        {/* <BattingStats /> */}
+        {/* <BowlerStats /> */}
         <div className="bg-[#F1F5F9] rounded-md p-[10px]">
           <div className="flex rounded-md items-center bg-white p-2 gap-3 ">
             <p className="">This Over</p>
