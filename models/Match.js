@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Team from "./Team";
+import Inning from "./Inning";
 
 const matchSchema = new mongoose.Schema(
   {

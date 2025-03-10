@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import Container from "@/components/Container";
+import Header from "@/components/Header";
 
 export default function CreateInning() {
   const { id } = useParams();
@@ -21,6 +23,12 @@ export default function CreateInning() {
       try {
         const res = await axios.get(`/api/npl/matches/${id}`);
         const matchData = res.data;
+
+        if (matchData.innings.length !== 0) {
+          console.log("redirecting...")
+          router.push(`/matches/${id}`);
+          return;
+        }
         setMatch(matchData);
 
         // Determine batting and bowling teams
@@ -75,7 +83,9 @@ export default function CreateInning() {
       const batsmenIds = batsmenRes.data.map((b) => b._id);
 
       // Create Bowler
-      const bowlerRes = await axios.post(`/api/npl/bowlers`, { playerId: bowler });
+      const bowlerRes = await axios.post(`/api/npl/bowlers`, {
+        playerId: bowler,
+      });
       const bowlerId = bowlerRes.data._id;
 
       // Create Inning
@@ -85,73 +95,84 @@ export default function CreateInning() {
         bowlersStats: [bowlerId],
       });
 
-      router.push(`/matches/${id}`);
+      // router.push(`/matches/${id}`);
     } catch (error) {
       console.error("Error creating inning:", error);
     }
   };
 
-  if (!match || !battingTeam || !bowlingTeam) return <p>Loading...</p>;
+  if (!match || !battingTeam || !bowlingTeam) return;
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Create Inning</h2>
-      <p className="text-lg">
-        Batting Team:{" "}
-        {match.team1 === battingTeam ? match.team1.name : match.team2.name}
-      </p>
-      <p className="text-lg">
-        Bowling Team:{" "}
-        {match.team1 === bowlingTeam ? match.team1.name : match.team2.name}
-      </p>
+    <Container>
+      <Header title="New Inning" backlink={`/matches/${id}`} />
+      <div className="p-[20px] pt-[0px] space-y-3">
+        <p className="text-lg p-4 rounded-sm bg-[#F1F5F9]">
+          Batting Team:{" "}
+          {match.team1 === battingTeam ? match.team1.name : match.team2.name}
+        </p>
+        <p className="text-lg p-4 rounded-sm bg-[#F1F5F9]">
+          Bowling Team:{" "}
+          {match.team1 === bowlingTeam ? match.team1.name : match.team2.name}
+        </p>
 
-      <form onSubmit={handleSubmit} className="mt-4">
-        <label className="block mb-2">Select Striker:</label>
-        <select
-          className="border p-2 w-full"
-          value={striker}
-          onChange={(e) => setStriker(e.target.value)}
-        >
-          <option value="">Select Striker</option>
-          {batsmen.map((player) => (
-            <option key={player._id} value={player._id}>
-              {player.name}
-            </option>
-          ))}
-        </select>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex flex-col space-y-4">
+            <label className="font-semibold text-[17px]">Select Striker:</label>
+            <select
+              className="p-3 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={striker}
+              onChange={(e) => setStriker(e.target.value)}
+            >
+              <option value="">Select Striker</option>
+              {batsmen.filter((player) => player._id !== nonStriker).map((player) => (
+                <option key={player._id} value={player._id}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col space-y-4">
+            <label className="font-semibold text-[17px]">
+              Select Non-Striker:
+            </label>
+            <select
+              className="p-3 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={nonStriker}
+              onChange={(e) => setNonStriker(e.target.value)}
+            >
+              <option value="">Select Non-Striker</option>
+              {batsmen.filter((player) => player._id !== striker).map((player) => (
+                <option key={player._id} value={player._id}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col space-y-4">
+            <label className="font-semibold text-[17px]">Select Bowler:</label>
+            <select
+              className="p-3 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={bowler}
+              onChange={(e) => setBowler(e.target.value)}
+            >
+              <option value="">Select Bowler</option>
+              {bowlers.map((player) => (
+                <option key={player._id} value={player._id}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label className="block mt-4 mb-2">Select Non-Striker:</label>
-        <select
-          className="border p-2 w-full"
-          value={nonStriker}
-          onChange={(e) => setNonStriker(e.target.value)}
-        >
-          <option value="">Select Non-Striker</option>
-          {batsmen.map((player) => (
-            <option key={player._id} value={player._id}>
-              {player.name}
-            </option>
-          ))}
-        </select>
-
-        <label className="block mt-4 mb-2">Select Bowler:</label>
-        <select
-          className="border p-2 w-full"
-          value={bowler}
-          onChange={(e) => setBowler(e.target.value)}
-        >
-          <option value="">Select Bowler</option>
-          {bowlers.map((player) => (
-            <option key={player._id} value={player._id}>
-              {player.name}
-            </option>
-          ))}
-        </select>
-
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 mt-4">
-          Start Inning
-        </button>
-      </form>
-    </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 mt-4"
+          >
+            Start Inning
+          </button>
+        </form>
+      </div>
+    </Container>
   );
 }

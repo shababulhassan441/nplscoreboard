@@ -48,7 +48,7 @@ const NewMatch = () => {
 
   return (
     <Container>
-      <Header title="New Match" />
+      <Header title="New Match" backlink="/matches"/>
       <div className="p-[20px] pt-[0px]">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* Team Selection */}
