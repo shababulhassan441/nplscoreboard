@@ -1,12 +1,12 @@
-"use client" 
+"use client";
 import Container from "@/components/Container";
 import Header from "@/components/Header";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const newmatch = () => {
-  const router=useRouter()
+const Newmatch = () => {
+  const router = useRouter();
   const [teamName, setTeamName] = useState("");
 
   const handleCreateTeam = async (e) => {
@@ -16,7 +16,7 @@ const newmatch = () => {
       const response = await axios.post("/api/npl/teams", {
         name: teamName,
       });
-      router.push('/teams');
+      router.push("/teams");
     } catch (error) {
       console.error(error);
       alert("Error creating Team.");
@@ -25,11 +25,7 @@ const newmatch = () => {
 
   return (
     <Container>
-      <Header
-        title="New Team"
-        backlink={"/teams"}
-     
-      />
+      <Header title="New Team" backlink={"/teams"} />
       <div className=" p-[20px] pt-[0px]">
         <form className="flex flex-col gap-4" onSubmit={handleCreateTeam}>
           <p className="font-semibold text-[17px]">Team Name</p>
@@ -54,4 +50,4 @@ const newmatch = () => {
   );
 };
 
-export default newmatch;  
+export default Newmatch;

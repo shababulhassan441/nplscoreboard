@@ -59,6 +59,7 @@ export default function MatchDetails() {
   // }, [id]);
 
   if (!match) return;
+  console.log(match);
 
   function calculateStrikeRate(runs, ballsFaced) {
     if (ballsFaced === 0) return 0; // Avoid division by zero
@@ -67,8 +68,8 @@ export default function MatchDetails() {
 
   function calculateEconomyRate(runsConceded, overs) {
     if (overs === 0) return 0; // Avoid division by zero
-    return (runsConceded / overs);
-}
+    return runsConceded / overs;
+  }
   return (
     <Container>
       <Header
@@ -80,7 +81,10 @@ export default function MatchDetails() {
         <div className="bg-[#F1F5F9] rounded-md p-[10px]">
           <div className="flex justify-between items-end  rounded-sm bg-white p-2 ">
             <div className="flex flex-col gap-2">
-              <p className="">Team A , 1st Inning</p>
+              <p className="">
+                {match.toss_winner.name}, won the Toss elect to{" "}
+                {match.toss_decision === "batting" ? "bat first" : "bowl first"}.
+              </p>
               <div>
                 <p className="text-[28px] font-semibold">
                   {innings.totalRuns} - {innings.totalWickets}{" "}
