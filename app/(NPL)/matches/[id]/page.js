@@ -83,7 +83,7 @@ export default function MatchDetails() {
             <div className="flex flex-col gap-2">
               <p className="">
                 {match.toss_winner.name}, won the Toss elect to{" "}
-                {match.toss_decision === "batting" ? "bat first" : "bowl first"}.
+                {match.toss_decision === "Batting" ? "bat first" : "bowl first"}.
               </p>
               <div>
                 <p className="text-[28px] font-semibold">
