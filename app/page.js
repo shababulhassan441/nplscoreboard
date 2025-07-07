@@ -2,6 +2,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import CardsData from "@/data/data";
 import Container from "@/components/Container";
+import ClearDBButton from "@/components/ClearDBButton";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
             <Card item={item} />
           </div>
         ))}
+        <ClearDBButton/>
       </div>
     </Container>
   );

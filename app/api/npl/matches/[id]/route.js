@@ -8,12 +8,15 @@ export async function GET(req, { params }) {
     .populate("team1")
     .populate("team2")
     .populate({
-      path:"innings",
-      populate:[
-        { path:"batsmenStats",populate:{path:"playerId"}},
-        { path:"bowlersStats",populate:{path:"playerId"}},
-        { path:"teamId"},
-      ]
+      path: "innings",
+      populate: [
+        { path: "batsmenStats", populate: { path: "playerId" } },
+        { path: "bowlersStats", populate: { path: "playerId" } },
+        { path: "striker" },
+        { path: "nonStriker" },
+        { path: "bowler" },
+        { path: "over",populate: { path: "balls" } },
+      ],
     })
     .populate("toss_winner");
 

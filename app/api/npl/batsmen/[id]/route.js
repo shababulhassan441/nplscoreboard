@@ -17,22 +17,6 @@ export async function GET(req, { params }) {
   }
 }
 
-// export async function PUT(req, { params }) {
-//   await dbConnect();
-//   try {
-//     const { name, team } = await req.json();
-//     const updatedPlayer = await Player.findByIdAndUpdate((await params).id, { name, team }, { new: true });
-
-//     if (!updatedPlayer) {
-//       return NextResponse.json({ error: "Player not found" }, { status: 404 });
-//     }
-
-//     return NextResponse.json(updatedPlayer, { status: 200 });
-//   } catch (error) {
-//     console.error("Error updating player:", error);
-//     return NextResponse.json({ error: "Error updating player" }, { status: 500 });
-//   }
-// }
 
 export async function PUT(req, { params }) {
   await dbConnect();

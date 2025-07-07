@@ -25,24 +25,23 @@ export default function CreateInning() {
         const matchData = res.data;
 
         if (matchData.innings.length !== 0) {
-          console.log("redirecting...")
+          console.log("redirecting...");
           router.push(`/matches/${id}`);
           return;
         }
         setMatch(matchData);
+        console.log("match Data=>", matchData);
 
         // Determine batting and bowling teams
         const isFirstInning = matchData.innings.length === 0;
         let batting, bowling;
         if (isFirstInning) {
           batting =
-            matchData.toss_decision === "Batting"
-              ? matchData.toss_winner
-              : matchData.team1 === matchData.toss_winner
+            matchData.toss_decision === "Batting" ? matchData.toss_winner.name : matchData.team1._id === matchData.toss_winner._id ? matchData.team2  : matchData.team1;
+          bowling =
+            batting._id === matchData.team1._id
               ? matchData.team2
               : matchData.team1;
-          bowling =
-            batting === matchData.team1 ? matchData.team2 : matchData.team1;
         } else {
           batting =
             matchData.innings[0].teamId === matchData.team1
@@ -88,9 +87,21 @@ export default function CreateInning() {
       });
       const bowlerId = bowlerRes.data._id;
 
+      // Create Over
+      const OverRes = await axios.post(`/api/npl/overs`, {
+        overNumber: 1,
+        bowlerId: bowlerId,
+      });
+      const overId = OverRes.data._id;
+
       // Create Inning
       await axios.post(`/api/npl/matches/${id}/innings`, {
         teamId: battingTeam,
+        over: overId,
+        overs: [overId],
+        striker: batsmenIds[0],
+        nonStriker: batsmenIds[1],
+        bowler: bowlerId,
         batsmenStats: batsmenIds,
         bowlersStats: [bowlerId],
       });
@@ -113,7 +124,7 @@ export default function CreateInning() {
         </p>
         <p className="text-lg p-4 rounded-sm bg-[#F1F5F9]">
           Bowling Team:{" "}
-          {match.team1 === bowlingTeam ? match.team1.name : match.team2.name}
+          {match.team2 === bowlingTeam ? match.team2.name : match.team1.name}
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -125,11 +136,13 @@ export default function CreateInning() {
               onChange={(e) => setStriker(e.target.value)}
             >
               <option value="">Select Striker</option>
-              {batsmen.filter((player) => player._id !== nonStriker).map((player) => (
-                <option key={player._id} value={player._id}>
-                  {player.name}
-                </option>
-              ))}
+              {batsmen
+                .filter((player) => player._id !== nonStriker)
+                .map((player) => (
+                  <option key={player._id} value={player._id}>
+                    {player.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="flex flex-col space-y-4">
@@ -142,11 +155,13 @@ export default function CreateInning() {
               onChange={(e) => setNonStriker(e.target.value)}
             >
               <option value="">Select Non-Striker</option>
-              {batsmen.filter((player) => player._id !== striker).map((player) => (
-                <option key={player._id} value={player._id}>
-                  {player.name}
-                </option>
-              ))}
+              {batsmen
+                .filter((player) => player._id !== striker)
+                .map((player) => (
+                  <option key={player._id} value={player._id}>
+                    {player.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="flex flex-col space-y-4">

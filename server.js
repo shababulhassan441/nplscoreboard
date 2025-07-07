@@ -20,7 +20,7 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
 
-  socket.on("newBall", (data) => {
+  socket.on("matchupdated", (data) => {
     io.emit("updateScore", data);
   });
 
@@ -30,6 +30,6 @@ io.on("connection", (socket) => {
 });
 
 // Start WebSocket server
-httpServer.listen(3001, () => {
+httpServer.listen(3002, () => {
   console.log("WebSocket Server running on port 3001");
 });
